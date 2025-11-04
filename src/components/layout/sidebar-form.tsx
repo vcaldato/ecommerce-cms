@@ -10,13 +10,24 @@ import {
 
 import { Button } from "../ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Tooltip } from "@radix-ui/react-tooltip";
+import { TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { Trash2 } from "lucide-react";
 
 type SidebarFormProps = {
   title: string;
   children: React.ReactNode;
-  onSave: () => void;
+  onSave?: () => void;
+  onDelete?: () => void;
+  loading: boolean;
 };
-export function SidebarForm({ title, children, onSave }: SidebarFormProps) {
+export function SidebarForm({
+  title,
+  children,
+  onSave,
+  onDelete,
+  loading,
+}: SidebarFormProps) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -39,16 +50,32 @@ export function SidebarForm({ title, children, onSave }: SidebarFormProps) {
           </SheetDescription>
         </SheetHeader>
 
-        {children}
+        <div className="px-8">{children}</div>
 
-        <SheetFooter>
+        <SheetFooter className="flex flex-row justify-between">
           <div className="flex-row gap-1">
-            <Button onClick={onSave}>Salvar</Button>
+            <Button type="button" onClick={onSave} disabled={loading}>
+              Salvar
+            </Button>
 
             <SheetClose asChild>
-              <Button variant="outline">Cancelar</Button>
+              <Button variant="outline" disabled={loading}>
+                Cancelar
+              </Button>
             </SheetClose>
           </div>
+          {onDelete && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="destructive" size="icon" onClick={onDelete}>
+                  <Trash2 />
+                </Button>
+                <TooltipContent>
+                  <p>Remover registro</p>
+                </TooltipContent>
+              </TooltipTrigger>
+            </Tooltip>
+          )}
         </SheetFooter>
       </SheetContent>
     </Sheet>
