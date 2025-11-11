@@ -1,4 +1,4 @@
-export interface BrandsDTO {
+export interface BrandDTO {
   id?: string;
   name: string;
 }

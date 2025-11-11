@@ -1,26 +1,26 @@
 import { api } from "../../../lib/axios";
-import type { ProductsDTO } from "../dtos/products.dto";
+import type { ProductDTO } from "../dtos/products.dto";
 
 const _ENDPOINT = "/products";
 
-export const ProductsService = {
-  async list(): Promise<ProductsDTO[]> {
+export const ProductService = {
+  async list(): Promise<ProductDTO[]> {
     const result = await api.get(_ENDPOINT);
     return result.data;
   },
 
-  async create(products: ProductsDTO): Promise<ProductsDTO> {
-    const result = await api.post(_ENDPOINT, products);
+  async create(product: ProductDTO): Promise<ProductDTO> {
+    const result = await api.post(_ENDPOINT, product);
     return result.data;
   },
 
-  async getById(id: string): Promise<ProductsDTO> {
+  async getById(id: string): Promise<ProductDTO> {
     const result = await api.get(`${_ENDPOINT}/${id}`);
     return result.data;
   },
 
-  async update(id: string, products: ProductsDTO): Promise<ProductsDTO> {
-    const result = await api.put(`${_ENDPOINT}/${id}`, products);
+  async update(id: string, product: ProductDTO): Promise<ProductDTO> {
+    const result = await api.put(`${_ENDPOINT}/${id}`, product);
     return result.data;
   },
 

@@ -70,10 +70,10 @@ export function SidebarForm({
                 <Button variant="destructive" size="icon" onClick={onDelete}>
                   <Trash2 />
                 </Button>
-                <TooltipContent>
-                  <p>Remover registro</p>
-                </TooltipContent>
               </TooltipTrigger>
+              <TooltipContent>
+                <p>Remover o registro</p>
+              </TooltipContent>
             </Tooltip>
           )}
         </SheetFooter>

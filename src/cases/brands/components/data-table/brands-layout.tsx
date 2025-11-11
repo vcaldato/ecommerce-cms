@@ -9,7 +9,7 @@ import { Search, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Outlet, useNavigate } from "react-router-dom";
 
-export function BrandsLayout() {
+export function BrandLayout() {
   const navigate = useNavigate();
 
   function handleCreate() {

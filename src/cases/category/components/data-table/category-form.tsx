@@ -5,8 +5,10 @@ import {
   useCreateCategory,
   useDeleteCategory,
   useUpdateCategory,
-} from "../../hooks/use-category.";
+} from "../hooks/use-category";
+
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import {
@@ -22,8 +24,8 @@ import { Input } from "@/components/ui/input";
 const formSchema = z.object({
   name: z
     .string()
-    .min(2, "Informe pelo menos 2 caracteres")
-    .max(60, "Máximo de 60 caracteres"),
+    .min(2, "Informe pelo menos 2 caractéres")
+    .max(60, "Máximo 60 caractéres"),
 });
 
 export function CategoryForm() {
@@ -74,7 +76,7 @@ export function CategoryForm() {
 
   function onDelete() {
     if (id) {
-      deleteCategory.mutate(id!, {
+      deleteCategory.mutate(id, {
         onSettled: () => {
           navigate("/categories");
         },
@@ -84,7 +86,7 @@ export function CategoryForm() {
 
   return (
     <SidebarForm
-      title={id ? "Editar Categoria" : "Cadastro de Categoria"}
+      title={id ? "Editar Categoria" : "Adicionar Categoria"}
       onSave={form.handleSubmit(onSubmit)}
       {...(id && { onDelete: onDelete })}
       loading={isLoading}

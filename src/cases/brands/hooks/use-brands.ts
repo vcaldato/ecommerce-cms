@@ -1,36 +1,64 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import type { BrandsDTO } from "../dtos/brands.dto";
-import { BrandsService } from "../services/brands.service";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { BrandService } from "../services/brands.service";
+import type { BrandDTO } from "../dtos/brands.dto";
+import { toast } from "react-toastify";
 
 export function useBrands() {
-  return useQuery<BrandsDTO[]>({
+  return useQuery<BrandDTO[]>({
     queryKey: ["brands"],
-    queryFn: BrandsService.list,
+    queryFn: BrandService.list,
   });
 }
 
 export function useBrand(id: string) {
-  return useQuery<BrandsDTO>({
-    queryKey: ["brands", id],
-    queryFn: () => BrandsService.getById(id),
-    enabled: !id,
+  return useQuery<BrandDTO>({
+    queryKey: ["brand", id],
+    queryFn: () => BrandService.getById(id),
+    enabled: !!id, //-> or Boolean(id)
   });
 }
 
-export function useCreateBrands() {
-  return useMutation<BrandsDTO, Error, Omit<BrandsDTO, "id">>({
-    mutationFn: (brands: Omit<BrandsDTO, "id">) => BrandsService.create(brands),
+export function useCreateBrand() {
+  const queryClient = useQueryClient();
+
+  return useMutation<BrandDTO, Error, Omit<BrandDTO, "id">>({
+    mutationFn: (brand: Omit<BrandDTO, "id">) => BrandService.create(brand),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["brands"] });
+      toast.success("Registro adicionado com sucessso!");
+    },
+    onError: (error) => {
+      toast.error(`Erro ao adicionar: ${error.message}`);
+    },
   });
 }
 
-export function useUpdateBrands() {
-  return useMutation<BrandsDTO, Error, { id: string; brands: BrandsDTO }>({
-    mutationFn: ({ id, brands }) => BrandsService.update(id, brands),
+export function useUpdateBrand() {
+  const queryClient = useQueryClient();
+
+  return useMutation<BrandDTO, Error, { id: string; brand: BrandDTO }>({
+    mutationFn: ({ id, brand }) => BrandService.update(id, brand),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["brands"] });
+      toast.success("Registro alterado com sucessso!");
+    },
+    onError: (error) => {
+      toast.error(`Erro ao alterar: ${error.message}`);
+    },
   });
 }
 
-export function useDeleteBrands() {
+export function useDeleteBrand() {
+  const queryClient = useQueryClient();
+
   return useMutation<void, Error, string>({
-    mutationFn: (id) => BrandsService.delete(id),
+    mutationFn: (id: string) => BrandService.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["brands"] });
+      toast.success("Registro exluído com sucessso!");
+    },
+    onError: (error) => {
+      toast.error(`Erro ao excluir: ${error.message}`);
+    },
   });
 }

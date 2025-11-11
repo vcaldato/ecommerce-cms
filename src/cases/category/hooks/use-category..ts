@@ -25,7 +25,7 @@ export function useCreateCategory() {
       CategoryService.create(category),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
-      toast.success("Registro adiciona com sucesso");
+      toast.success("Registro adicionado com sucessso!");
     },
     onError: (error) => {
       toast.error(`Erro ao adicionar: ${error.message}`);
@@ -40,7 +40,7 @@ export function useUpdateCategory() {
       mutationFn: ({ id, category }) => CategoryService.update(id, category),
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["categories"] });
-        toast.success("Registro alterado com sucesso");
+        toast.success("Registro alterado com sucessso!");
       },
       onError: (error) => {
         toast.error(`Erro ao alterar: ${error.message}`);
@@ -52,10 +52,10 @@ export function useUpdateCategory() {
 export function useDeleteCategory() {
   const queryClient = useQueryClient();
   return useMutation<void, Error, string>({
-    mutationFn: (id) => CategoryService.delete(id),
+    mutationFn: (id: string) => CategoryService.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["categories"] });
-      toast.success("Registro excluído com sucesso");
+      toast.success("Registro exluído com sucessso!");
     },
     onError: (error) => {
       toast.error(`Erro ao excluir: ${error.message}`);
